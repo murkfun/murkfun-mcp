@@ -7,6 +7,22 @@ Releases are GitHub Releases of this repository (tag `v<version>`): `murkfun-mcp
 npm install -g https://github.com/murkfun/murkfun-mcp/releases/latest/download/murkfun-mcp.tgz
 ```
 
+## 1.0.1
+
+Railgun is now the default funding source; 0xbow Privacy Pools stay fully supported as `source: "note"`.
+
+- `buy` and `create_token` without `source` pay from Railgun: they return the signed order and the Railgun
+  transaction to build for it (an unshield to MurkFun's Railgun adapter), and `submit_railgun` has the MurkFun relayer
+  send it. Pass `source: "note"` for a 0xbow note, as before. **If you relied on the old default, add
+  `source: "note"`.**
+- `fund_pseudonym` takes `source` too (`railgun`, the default and only one; `note` is refused with a pointer to
+  `buy source=note`).
+- Setup, `deposit`, `WAITING_FOR_ASP` and the MCP instructions put Railgun first: shield BNB into a Railgun wallet (a
+  new shield is spendable after Railgun's Proof of Innocence standby, about 1 h); a 0xbow deposit waits for 0xbow's ASP
+  approval, which can take hours or much longer, and a note still waiting suggests Railgun.
+- Docs (the skill, the agent guide, the README) list Railgun first.
+- **Notice (Nov 8, 2026):** 0xbow's ASP on BNB Chain is currently not approving new deposits. Use Railgun. BNB already deposited into 0xbow is safe and can be taken back to your wallet any time with 0xbow's ragequit.
+
 ## 1.0.0
 
 First release of the MurkFun MCP server and CLI for BNB Smart Chain mainnet. Targets the MurkFun contracts v1.1

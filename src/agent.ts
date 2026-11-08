@@ -879,7 +879,8 @@ export class MurkFunAgent {
         : opts.recoveryFile ? ["Call recover to find the current 0xbow notes and your MurkFun positions on-chain, then status."]
         : [backup,
           "Every MurkFun order needs a fresh signature from this wallet for exactly that order (the signer sees only an opaque hash); the wallet never sends a MurkFun transaction.",
-          `To buy, fund 0xbow: the wallet ${me} deposits BNB (deposit {amountBnb}; ~0.003 BNB gas for the keystore registration and the deposit), or use Railgun (buy source=railgun).`],
+          "To buy, pay from Railgun (the default): shield BNB into a Railgun wallet (a new shield can be spent after Railgun's Proof of Innocence standby, about 1 h); then buy {token, bnbAmount} returns the Railgun transaction to build and submit_railgun {transactions} has the MurkFun relayer send it (this wallet needs no BNB for it).",
+          `Or 0xbow Privacy Pools (buy source=note): the wallet ${me} deposits BNB (deposit {amountBnb}; ~0.003 BNB gas for the keystore registration and the deposit), then waits for 0xbow's ASP to approve the deposit, which can take hours or much longer.`],
     };
   }
 
@@ -969,7 +970,7 @@ export class MurkFunAgent {
     this.vault.save();
     return {
       depositIndex: index, amountBnb: o.amountBnb, txHash: r.transactionHash, privacy: advice,
-      next: "Wait for 0xbow ASP approval (measured: ~9 min for an EOA deposit; can take hours). Poll status every few minutes. Back up the vault now. Then buy any amount from the note: buy {token, bnbAmount}.",
+      next: "Wait for 0xbow ASP approval (it can take hours or much longer, and the ASP may not approve a deposit at all: then the user exits through 0xbow's own app, ragequit). Poll status every 5-10 minutes. Back up the vault now. Then buy any amount from the note: buy {token, bnbAmount, source:\"note\"}. Railgun (the default source) does not wait for 0xbow's ASP.",
     };
   }
 
@@ -1130,8 +1131,9 @@ export class MurkFunAgent {
         const d = this.data.deposits.find((x) => x.index === n.depositIndex);
         const mins = d ? Math.round((Date.now() - d.createdAt) / 60_000) : undefined;
         firstReason = `WAITING_FOR_ASP: deposit #${n.depositIndex}${mins !== undefined ? ` (made ${mins} min ago)` : ""} is not usable yet: ${asp.reason}. ` +
-          "0xbow's ASP must approve each deposit before it can fund buys; this usually takes ~10 minutes but can take hours. " +
-          "Nothing was spent. Poll status every 5-10 minutes and retry once aspApproved is true.";
+          "0xbow's ASP must approve each deposit before it can fund buys; this can take hours or longer. " +
+          "Nothing was spent. Poll status every 5-10 minutes and retry once aspApproved is true, or pay from Railgun instead " +
+          "(buy without source, or source=railgun: it does not wait for 0xbow's ASP).";
       }
     }
     throw new ToolError(firstReason);
@@ -1198,8 +1200,9 @@ export class MurkFunAgent {
   }
 
   /** The curve-phase funding rule: while `requiredOnCurve`, MurkFun accepts BNB for a token still on its
-   *  curve only from an allowlisted privacy-pool contract: MurkFun's 0xbow adapter (buy source=note) or MurkFun's
-   *  Railgun adapter (buy / fund_pseudonym / create_token source=railgun). After graduation it does not apply. */
+   *  curve only from an allowlisted privacy-pool contract: MurkFun's Railgun adapter (buy / fund_pseudonym /
+   *  create_token, source=railgun, the default) or MurkFun's 0xbow adapter (buy / create_token source=note). After
+   *  graduation it does not apply. */
   private async privacyFunding() {
     const [requiredOnCurve, allowlist] = await Promise.all([
       this.pub.readContract({ address: this.D.factory, abi: factoryAbi, functionName: "privacyFundingRequired" }) as Promise<boolean>,
@@ -1293,12 +1296,13 @@ export class MurkFunAgent {
   }
 
   /** Buy `bnbAmount` BNB worth (exact in) or exactly `tokens` tokens (exact out; "cap" = up to the holding cap):
-   *  from a 0xbow note (default; any amount the note holds, the change stays in 0xbow), as proved calls for Railgun /
-   *  any address (buyDirect / buyDirectExactOut, nothing sent from here), or from the internal balance. `dryRun`:
-   *  quote only (expected fill, relayer fee and gas class, whether it completes the curve); nothing is proved or sent. */
+   *  from Railgun (default: a signed order and the Railgun transaction to build for it, sent by submit_railgun; nothing
+   *  sent from here), from a 0xbow note (source=note; any amount the note holds, the change stays in 0xbow), or from the
+   *  internal balance. `dryRun`: quote only (expected fill, relayer fee and gas class, whether it completes the curve);
+   *  nothing is proved or sent. */
   async buy(o: { token: string; source?: "note" | "railgun" | "balance"; bnbAmount?: string; tokens?: string; slippageBps?: number; validMinutes?: number; dryRun?: boolean; selfSubmit?: boolean }) {
     const t = asAddress(o.token, "token");
-    const source = o.source ?? "note";
+    const source = o.source ?? "railgun";
     if (!o.bnbAmount === !o.tokens) {
       throw new ToolError("give bnbAmount (BNB to spend, e.g. \"0.37\") or tokens (exactly this many tokens, e.g. \"1000000\", or \"cap\" = up to your holding cap), not both");
     }
@@ -1423,7 +1427,7 @@ export class MurkFunAgent {
         publicOk
           ? "Any other address can send `call` instead (it carries the BNB); that address is public and links itself to this pseudonym; the proofs do not link the pseudonym to your other pseudonyms (timing, amounts and IP can)."
           : `${PRIVACY_RULE} So there is no plain-wallet version of this call while the token is on its curve (MurkFun rejects it with PrivacyPoolRequired).`,
-        `Valid until ${new Date(Number(relay.deadline) * 1000).toISOString()} and only while the pseudonym's nonce is ${nonce}: do not trade this token before it lands; if it went stale, call buy source=railgun again (a new order, signed again).`,
+        `Valid until ${new Date(Number(relay.deadline) * 1000).toISOString()} and only while the pseudonym's nonce is ${nonce}: do not trade this token before it lands; if it went stale, call buy again (source railgun, the default: a new order, signed again).`,
         "Privacy: Binance sees when your wallet signed this order; let a random while pass before the Railgun transaction is sent.",
       ],
     };
@@ -1459,7 +1463,9 @@ export class MurkFunAgent {
    *  plain-wallet calls: with Railgun, buy source=railgun buys directly. Nothing is sent from here. Each order is signed
    *  by the wallet and binds the amount and the pseudonym's next nonce(s): any other action for this token first makes
    *  them stale (the call reverts and nothing is spent). */
-  async fundPseudonym(o: { token: string; amountBnb: string; buyBnb?: string; buyTokens?: string; slippageBps?: number; validMinutes?: number; selfSubmit?: boolean }) {
+  async fundPseudonym(o: { token: string; source?: "railgun" | "note"; amountBnb: string; buyBnb?: string; buyTokens?: string; slippageBps?: number; validMinutes?: number; selfSubmit?: boolean }) {
+    // Railgun is the only private source a funding takes: a 0xbow note pays a buy (or a launch) directly
+    if (o.source === "note") throw new ToolError("NO_NOTE_FUNDING: fund_pseudonym is paid from Railgun (the default); a 0xbow note pays a buy directly: buy {token, bnbAmount, source:\"note\"}. Nothing was signed or sent");
     const t = asAddress(o.token, "token");
     const value = parseEther(o.amountBnb);
     if (value <= 0n) throw new ToolError("BELOW_MINIMUM: amountBnb must be > 0");
@@ -1770,10 +1776,10 @@ export class MurkFunAgent {
    *  listing), the same for every token and not chosen by the dev (not only by the curve). The launch is ONE signed Launch order (the wallet
    *  signs it, nonce 0 of the dev pseudonym): it binds the predicted token address, the dev fee recipient and the
    *  creator buy. While the factory's privacy-funding rule is on, it is paid from a privacy pool like every curve buy:
-   *  source=note (default) is ONE relayer order `privacyPoolLaunch` (a 0xbow withdrawal through MurkFun's 0xbow adapter;
-   *  one relayer fee for launch + buy); source=railgun signs a `railgunLaunch` order and returns the Railgun
-   *  transaction to build (an unshield to MurkFun's Railgun adapter) with the relay to post (submit_railgun), or with
-   *  selfSubmit the call to send; nothing is sent from here. The creator buy is the first trade on a fresh curve, so its outcome is computed exactly from
+   *  source=railgun (default) signs a `railgunLaunch` order and returns the Railgun transaction to build (an unshield
+   *  to MurkFun's Railgun adapter) with the relay to post (submit_railgun), or with selfSubmit the call to send; nothing
+   *  is sent from here. source=note is ONE relayer order `privacyPoolLaunch` (a 0xbow withdrawal through MurkFun's 0xbow
+   *  adapter; one relayer fee for launch + buy). The creator buy is the first trade on a fresh curve, so its outcome is computed exactly from
    *  factory.currentTerms() (curve.ts, the port of MurkFunCurve.buy): no slippage. Without a buy, the launch is
    *  relayer-sponsored (`launch`). */
   async createToken(o: {
@@ -1809,7 +1815,8 @@ export class MurkFunAgent {
     // a dry run signs nothing, not even with the one-time launch key
     const launchSig = o.dryRun ? "0x" as Hex : await launchKey.sign({ hash: launchDigest(this.cfg.chainId, this.D.factory, t, p) });
     const spec = { name: o.name, symbol: o.symbol, metadataURI: o.metadataURI, devFeeRecipient: recipient, devSalt: salt, launchSig };
-    const validity = await this.deadlineIn(o.validMinutes ?? (o.source === "railgun" && (bnbIn > 0n || o.buyTokens) ? RAILGUN_VALID_MINUTES : undefined));
+    const source = o.source ?? "railgun";
+    const validity = await this.deadlineIn(o.validMinutes ?? (source === "railgun" && withBuy ? RAILGUN_VALID_MINUTES : undefined));
 
     if (!withBuy) {
       if (o.dryRun) return { dryRun: true, token: "(chosen when sent: the address depends on a random salt)", sponsored: true };
@@ -1820,7 +1827,6 @@ export class MurkFunAgent {
     }
 
     // ---- creator buy
-    const source = o.source ?? "note";
     // the terms the token gets at listing (its dev limit included): currentTerms() is part of the address commitment
     const terms = await this.pub.readContract({ address: this.D.factory, abi: factoryAbi, functionName: "currentTerms" }) as CreatorBuyTerms;
     // 0xbow: one relayer order; Railgun: the relayer sends the adapter's launch once the unshield is proved (a Railgun

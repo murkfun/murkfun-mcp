@@ -1,6 +1,6 @@
 {
   "name": "murkfun-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "MurkFun MCP server (stdio) for your own AI agent: private meme-token trading on BSC funded by 0xbow Privacy Pools and Railgun. Every order is signed by your wallet for that exact order and proven locally (Noir); keeps the seed signature and 0xbow secrets in an encrypted local vault and sends only proved orders to a MurkFun relayer.",
   "type": "module",

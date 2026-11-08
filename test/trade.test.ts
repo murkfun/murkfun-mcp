@@ -879,3 +879,21 @@ test("buy source=railgun dryRun: a quote like the other dry runs (relayer fee, e
   assert.deepEqual(signed, []);
   assert.deepEqual(data.railgunRelays, []);
 });
+
+test("Railgun is the default source: buy without source pays from Railgun, source=note from a 0xbow note; fund_pseudonym refuses note before anything is signed", async () => {
+  const T = "0x0000000000000000000000000000000000007001";
+  const paths: string[] = [];
+  const agent: any = Object.create(MurkFunAgent.prototype);
+  Object.assign(agent, {
+    tradable: async () => ({ graduated: false, tokensSold: 0n, curveSupply: 10n ** 27n }),
+    railgunBuy: async () => { paths.push("railgun"); return { source: "railgun" }; },
+    buyFromNote: async () => { paths.push("note"); return { source: "note" }; },
+    marketOf: async () => { paths.push("marketOf"); throw new Error("read"); },
+    track: () => {},
+  });
+  assert.equal((await agent.buy({ token: T, bnbAmount: "0.1", dryRun: true })).source, "railgun");
+  assert.equal((await agent.buy({ token: T, bnbAmount: "0.1", source: "note", dryRun: true })).source, "note");
+  await assert.rejects(agent.fundPseudonym({ token: T, amountBnb: "0.1", source: "note" }), (e: unknown) => e instanceof ToolError && /^NO_NOTE_FUNDING/.test((e as Error).message));
+  assert.deepEqual(paths, ["railgun", "note"]);
+  assert.match(hintFor("WAITING_FOR_ASP: deposit #0 is not usable yet"), /Railgun/);
+});
