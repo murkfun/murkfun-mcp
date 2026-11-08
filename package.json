@@ -1,0 +1,69 @@
+{
+  "name": "murkfun-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MurkFun MCP server (stdio) for your own AI agent: private meme-token trading on BSC funded by 0xbow Privacy Pools and Railgun. Every order is signed by your wallet for that exact order and proven locally (Noir); keeps the seed signature and 0xbow secrets in an encrypted local vault and sends only proved orders to a MurkFun relayer.",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://murk.fun/docs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/murkfun/murkfun-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/murkfun/murkfun-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "bsc",
+    "bnb",
+    "privacy-pools",
+    "meme",
+    "launchpad",
+    "ai-agent",
+    "zk",
+    "noir"
+  ],
+  "bin": {
+    "murkfun-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "networks",
+    "circuits",
+    "docs",
+    "skills",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && chmod +x dist/index.js",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "tsx --test --test-reporter=spec test/unit.test.ts test/safety.test.ts test/trade.test.ts test/orders.test.ts test/upload.test.ts test/holderpath.test.ts test/holderslookup.test.ts test/recipients.test.ts",
+    "test": "npm run test:unit",
+    "network": "node scripts/set-network.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "@zk-kit/artifacts": "2.0.1",
+    "@zk-kit/lean-imt": "2.2.4",
+    "circomlibjs": "0.1.7",
+    "snarkjs": "0.7.5",
+    "viem": "2.45.3",
+    "zod": "4.6.7",
+    "@noir-lang/noir_js": "1.0.0",
+    "@zkpassport/poseidon2": "0.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}

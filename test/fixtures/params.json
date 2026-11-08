@@ -1,0 +1,44 @@
+{
+  "chainId": 56,
+  "appliesTo": "new tokens",
+  "market": "0x695918dc96996A12485d3c1E1dF1aaBE7ed7e374",
+  "markets": ["0x695918dc96996A12485d3c1E1dF1aaBE7ed7e374"],
+  "factory": "0xBCB76f924DD59E7E3a6C6722A63C60C5b7EEe230",
+  "locker": "0x4427004339c297d15744D9a72Ff2865D1a5bBedc",
+  "dex": "0xe2714172dcea6739654d36d3b94b7c15fb6525ac",
+  "hook": "0x00d65aa83ad05f6020a0e7562d9e84323e989a5f",
+  "clPoolManager": "0xa0ffb9c1ce1fe56963b0321b32e7a0302114058b",
+  "totalSupply": 1000000000,
+  "curveSupply": 800000000,
+  "lpSupply": 200000000,
+  "graduationRaiseBnb": 10,
+  "startPriceBnb": 3.125e-9,
+  "endPriceBnb": 5e-8,
+  "holderCapBps": 100,
+  "devCapBps": 3000,
+  "tradeFeeBps": 100,
+  "devFeeShareBps": 3000,
+  "routerFeeBps": 0,
+  "lockerDevShareBps": 5000,
+  "graduationVenues": [
+    {
+      "kind": "pancake-infinity",
+      "feeTier": 0
+    },
+    {
+      "kind": "pancake-v3",
+      "feeTier": 10000
+    },
+    {
+      "kind": "pancake-v3",
+      "feeTier": 2500
+    },
+    {
+      "kind": "pancake-v2",
+      "feeTier": 2500
+    }
+  ],
+  "repairBudgetBps": 1000,
+  "infinityFeeBps": 100,
+  "privacyPoolAdapter": "0x7c0f3b2ee1d5a0c4e65a1b3b4f2d5c8a9e6f1d20"
+}

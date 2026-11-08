@@ -1,0 +1,204 @@
+{
+  "address": "0x87df4e90c4f6fb6f7e800f8e5b32b6f9286112f5",
+  "name": "Bog Frog",
+  "symbol": "BOGF",
+  "metadataUri": "ipfs://bafkreicr4hp6l4zz2e47oi5ba5mpywns54mxz5ttd2bzcvkf7hjomelz5q",
+  "image": "/v1/ipfs/bafkreihn64c5sb4dlyxv2v2phg76xprxcvwwr4nk3bdkalmw2nudlqgszq",
+  "metadata": {
+    "uri": "ipfs://bafkreicr4hp6l4zz2e47oi5ba5mpywns54mxz5ttd2bzcvkf7hjomelz5q",
+    "cid": "bafkreicr4hp6l4zz2e47oi5ba5mpywns54mxz5ttd2bzcvkf7hjomelz5q",
+    "mutable": false,
+    "status": "ok",
+    "description": "Lives at the bottom of the bog. Graduates or croaks.",
+    "image": "ipfs://bafkreihn64c5sb4dlyxv2v2phg76xprxcvwwr4nk3bdkalmw2nudlqgszq",
+    "imageUrl": "/v1/ipfs/bafkreihn64c5sb4dlyxv2v2phg76xprxcvwwr4nk3bdkalmw2nudlqgszq",
+    "links": {
+      "telegram": "https://t.me/example",
+      "github": "https://github.com/example"
+    }
+  },
+  "moderation": "unscanned",
+  "createdAt": 1793269854,
+  "createdBlock": 130457389,
+  "status": "graduated",
+  "progress": 1,
+  "curve": {
+    "tokensSold": 800000000,
+    "curveSupply": 800000000,
+    "bnbReserve": 10,
+    "graduationRaiseBnb": 10
+  },
+  "priceBnb": 3.625627804707105e-8,
+  "marketCapBnb": 36.25627804707105,
+  "priceUsd": 0.000022054528752067974,
+  "marketCapUsd": 22054.528752067974,
+  "change24h": 10.602008975062736,
+  "volumeBnb": 26.127350123645932,
+  "volume24hBnb": 26.127350123645932,
+  "volumeUsd": 16063.33698156767,
+  "volume24hUsd": 15893.148043745383,
+  "trades": 705,
+  "trades24h": 705,
+  "buys": 626,
+  "sells": 79,
+  "holders": 149,
+  "lastTradeAt": 1793300163,
+  "venue": {
+    "kind": "pancake-infinity",
+    "pool": "0xa0ffb9c1ce1fe56963b0321b32e7a0302114058b",
+    "poolId": "0x1d918548b58414166a1aab817bf8bc45461c6ab513bd08758f5c09b2e1ced7ab",
+    "feeTier": 0,
+    "hookFeeBps": 100
+  },
+  "devCapBps": 3000,
+  "bnbUsd": {
+    "price": 608.41514758,
+    "updatedAt": 1793300301,
+    "source": "chainlink"
+  },
+  "createdTx": "0x3d9f53f29b55e955f85184052a9906763aff79fc68c03fd6eb28417d2f9998a3",
+  "dev": {
+    "pseudonym": "#67e5",
+    "capBps": 3000,
+    "feeRecipient": "0xcfbbb52233a2b6cd0259ab387c33119ed1872671"
+  },
+  "curveCompleted": {
+    "at": 1793283914,
+    "block": 130458160,
+    "tx": "0x12e18c8d5318345e69cc536b0ba93fc845add7dbf62d1536366c62832b801b45",
+    "bnbReserve": 10,
+    "priceBnb": 5e-8,
+    "bnbUsd": 612.29497692,
+    "bnbReserveUsd": 6122.9497691999995,
+    "priceUsd": 0.000030614748845999995
+  },
+  "fees": {
+    "tradeFeeBps": 100,
+    "curveFeesBnb": 0.14503979196264516,
+    "toPlatformBnb": 0.159642854374,
+    "toDevBnb": 0.101626937589,
+    "relayerFeesBnb": 0.13720000000000002,
+    "routerFeesBnb": 0,
+    "hookFeesBnb": 0.11623
+  },
+  "privacyPoolBuys": 578,
+  "buysPaidFrom": {
+    "privacypool": {
+      "count": 578,
+      "bnb": 11.484
+    },
+    "railgun": {
+      "count": 1,
+      "bnb": 0.0198
+    },
+    "direct": {
+      "count": 1,
+      "bnb": 0.0198
+    },
+    "balance": {
+      "count": 3,
+      "bnb": 0.651599
+    }
+  },
+  "withdrawals": {
+    "bnb": {
+      "count": 17,
+      "amount": 0.8034407559675878
+    },
+    "tokens": {
+      "count": 1,
+      "amount": 4983600.036065372
+    }
+  },
+  "graduation": {
+    "graduated": true,
+    "configuredOrder": [
+      {
+        "kind": "pancake-infinity",
+        "feeTier": 0
+      },
+      {
+        "kind": "pancake-v3",
+        "feeTier": 10000
+      },
+      {
+        "kind": "pancake-v3",
+        "feeTier": 2500
+      },
+      {
+        "kind": "pancake-v2",
+        "feeTier": 2500
+      }
+    ],
+    "lpFeeSplit": {
+      "devBps": 5000,
+      "platformBps": 5000
+    },
+    "venue": "pancake-infinity",
+    "pool": "0xa0ffb9c1ce1fe56963b0321b32e7a0302114058b",
+    "poolId": "0x1d918548b58414166a1aab817bf8bc45461c6ab513bd08758f5c09b2e1ced7ab",
+    "feeTier": 0,
+    "hook": "0x00d65aa83ad05f6020a0e7562d9e84323e989a5f",
+    "positionId": "1625525",
+    "bnbRangePositionId": "1625524",
+    "tx": "0x12e18c8d5318345e69cc536b0ba93fc845add7dbf62d1536366c62832b801b45",
+    "at": 1793283914,
+    "block": 130458160,
+    "liquidity": {
+      "bnb": 9.999999989999997,
+      "tokens": 199999999.8
+    },
+    "repaired": false,
+    "leftovers": {
+      "tokensBurnt": 0.2000000000000034,
+      "wbnbToTreasury": 1.0000002433e-8
+    },
+    "skippedVenues": [],
+    "trades": {
+      "murkfun": {
+        "trades": 53,
+        "volumeBnb": 4.45183157527043,
+        "routerFeesBnb": 0,
+        "hookFeesBnb": 0.04451
+      },
+      "external": {
+        "trades": 19,
+        "volumeBnb": 7.1715393521109885
+      }
+    },
+    "lp": {
+      "form": "burnt",
+      "nft": "0x55f4c8aba71a1e923edc303eb4feff14608cc226",
+      "positionId": "1625525",
+      "bnbRangePositionId": "1625524",
+      "owner": "0x000000000000000000000000000000000000dead"
+    },
+    "postGraduationFees": {
+      "currency": "BNB",
+      "feeBps": 100,
+      "swaps": 72,
+      "earnedBnb": 0.11623,
+      "fromMurkFunTradesBnb": 0.04451,
+      "fromOtherTradesBnb": 0.07172,
+      "paidBnb": 0.1,
+      "unpaidBnb": 0.01623,
+      "claims": 2,
+      "toDevBnb": 0.05,
+      "toPlatformBnb": 0.05
+    },
+    "lpFeesCollected": {
+      "count": 0,
+      "bnb": 0,
+      "tokens": 0
+    },
+    "poolBalances": {
+      "tokens": 234867750.3715985,
+      "bnb": 8.51543046176275,
+      "block": 130458523,
+      "method": "ranged positions"
+    },
+    "failures": [],
+    "dex": "0xe2714172dcea6739654d36d3b94b7c15fb6525ac",
+    "locker": "0x4427004339c297d15744D9a72Ff2865D1a5bBedc"
+  }
+}

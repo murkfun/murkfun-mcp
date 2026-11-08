@@ -1,0 +1,24 @@
+{
+  "network": "bsc",
+  "chainId": 56,
+  "rpc": "https://public-bsc.nownodes.io",
+  "logRpcs": [
+    "https://public-bsc.nownodes.io",
+    "https://rpc-bsc.48.club"
+  ],
+  "holdersApi": "https://murk.fun",
+  "relayerUrl": "https://relayer.murk.fun",
+  "indexerUrl": "https://api.murk.fun/v1",
+  "orderVerifierCodeHash": "0xbeef9419e77a19e6b794a06d3f526dced2192025266efd4f8d5b9073b8a7e27a",
+  "deployment": {
+    "market": "0x9717126512c5a4D3b5c0E13421639ea80DACaa91",
+    "factory": "0x11e02275559FEDd72a0B578cc5b4c0F766aCa25A",
+    "orders": "0xCc09A7772aDAf0586040a933b70B1248F432eb87",
+    "holderRoots": "0xD59867DADC96202284Fa54d016C6d66a0adBaE24",
+    "locker": "0xFD25D90f151193A795E4a9De6F0bBB9dD5AA32A8",
+    "privacyPoolAdapter": "0x0242771ba1758554fa6C806d9219c7dF891c9879",
+    "railgunAdapter": "0x2ba9978Ba84dB605c1b6a7F0885f84Af340Ad249",
+    "deployBlock": 132262524,
+    "holderRootsDeployBlock": 131973909
+  }
+}

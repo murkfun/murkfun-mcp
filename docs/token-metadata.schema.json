@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/murkfun/murkfun-mcp/main/docs/token-metadata.schema.json",
+  "title": "MurkFun token metadata v1",
+  "description": "Off-chain document behind MurkFunToken.metadataURI (see docs/TOKEN_METADATA.md). Readers ignore it unless name and symbol equal the token's on-chain name() and symbol().",
+  "type": "object",
+  "required": ["schema", "name", "symbol"],
+  "properties": {
+    "schema": { "const": "murkfun-token-metadata/v1" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+    "symbol": { "type": "string", "minLength": 1, "maxLength": 16 },
+    "description": { "type": "string", "maxLength": 1000 },
+    "image": { "type": "string", "pattern": "^ipfs://[A-Za-z0-9]{46,100}$" },
+    "external_url": { "type": "string", "pattern": "^https://", "maxLength": 200 },
+    "links": {
+      "type": "object",
+      "properties": {
+        "website": { "$ref": "#/$defs/https" },
+        "x": { "$ref": "#/$defs/https" },
+        "telegram": { "$ref": "#/$defs/https" },
+        "discord": { "$ref": "#/$defs/https" },
+        "github": { "$ref": "#/$defs/https" }
+      }
+    }
+  },
+  "$defs": {
+    "https": { "type": "string", "pattern": "^https://[^\\s]+$", "maxLength": 200 }
+  }
+}
