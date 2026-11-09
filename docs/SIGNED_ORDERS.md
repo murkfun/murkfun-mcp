@@ -248,8 +248,8 @@ visible on chain a day in advance). The MCP refuses an order gate whose verifier
 - The model provider of the AI agent sees the tool results: the wallet address and the pseudonyms appear in them
   together.
 - The RPC the agent uses sees the wallet's and the pseudonyms' balance reads together; use your own RPC if that matters.
-- While the factory's privacy-funding rule is on, BNB on the curve comes only from privacy pools; after graduation a
-  plain wallet may fund a pseudonym. Withdrawals to a public address are public (by default the MCP allows only the
+- While the factory's privacy-funding rule is on, BNB on the curve comes only from privacy pools; while it is off (as on
+  production since 2026-11-09, pending the timelock) and after graduation a plain wallet may fund a pseudonym (its address is public). Withdrawals to a public address are public (by default the MCP allows only the
   user's own wallet, which links the pseudonym to it).
 
 ## 8. Gas and sizes (BSC fork measurements)

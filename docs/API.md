@@ -70,7 +70,7 @@ a short id: `#` + the last 4 hex digits of the pseudonym, e.g. `#a3f2`.
 ### `GET /v1/privacy-funding`
 
 The curve-phase privacy-pool funding rule (MurkFunFactory, owner-settable, global: not part of a
-token's terms). While `requiredOnCurve` is true, BuyDirect / Fund orders and creator buys of a token still on its curve accept BNB
+token's terms; off on production since 2026-11-09, pending the 24 h timelock: any wallet may fund). While `requiredOnCurve` is true, BuyDirect / Fund orders and creator buys of a token still on its curve accept BNB
 only from an address in `allowlist` (the deploy script lists MurkFun's two adapters: MurkFunPrivacyPoolAdapter for 0xbow and
 MurkFunRailgunAdapter for Railgun); 0xbow buys always come from 0xbow, Railgun buys from a Railgun unshield; after
 graduation the rule does not apply. The current state is re-read from the factory at indexer start and after every
